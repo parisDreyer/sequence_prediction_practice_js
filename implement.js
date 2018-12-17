@@ -10,7 +10,7 @@ const target_accuracy = 0.99; // 99%
 // io
 const input_size = 5; // array of  5 values
 const output_size = 5;
-const max_epochs = 300;
+const max_epochs = 60000;
 
 // layers and nodes per layer
 const nodes1 = 20;
@@ -25,12 +25,12 @@ const layers = [
 let tha_model = new Model({ input_size, layers });
 
 
-function train_model(model, target_accuracy, max_epochs){
+async function train_model(model, target_accuracy, max_epochs){
 
     let current_epoch = 0;
 
     let accuracy = 0;
-    while(accuracy < target_accuracy || current_epoch > max_epochs){
+    while(accuracy < target_accuracy && current_epoch < max_epochs){
 
         let new_samples = prep_rnn_input(Numbers);
 
@@ -58,10 +58,15 @@ function train_model(model, target_accuracy, max_epochs){
 
 
 
-// train the model
-let trained_model = train_model(tha_model, target_accuracy, max_epochs);
 
-// predict next number sequence
-console.log("THE PREDICTION: ",
-    JSON.stringify(trained_model.predict(Numbers[Numbers.length - 1]))); 
+
+train_model(tha_model, target_accuracy, max_epochs).then(m => {
+    // train the model
+    let trained_model = m;
+    // predict next number sequence
+    console.log("THE PREDICTION: ",
+        JSON.stringify(trained_model.predict(Numbers[Numbers.length - 1]))); 
+
+});
+
 

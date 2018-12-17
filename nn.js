@@ -105,11 +105,11 @@ class Layer{
         if(this.size === 0) return deltas;
 
 
-        let inpt_errs = this.nodes[0].adjust(deltas);
+        let inpt_errs = this.nodes[0].adjust(deltas[0]);
         for(let i = 1; i < this.nodes.length; ++i){
             inpt_errs = NNMath.vals_plus_vals(
                 inpt_errs, 
-                this.nodes[i].adjust(deltas));
+                this.nodes[i].adjust(deltas[i]));
         }
         this.input_error = inpt_errs;
 
@@ -146,6 +146,7 @@ class Perceptron {
     }
 
     adjust(output_error){
+
         let err_signal = this.prev_output - NNMath.tanh_deriv(output_error);
         this.input_errors = this.weights.map(w => w * err_signal);
         // adjust the weights

@@ -4,7 +4,7 @@ class NNMath{
 
     // between -0.02 and 0.02
     static rand_weights() {
-        return (Math.random() * (-0.0200 - 0.0200) + 0.0200);
+        return (Math.random() * (-0.02 - 0.02) + 0.02);
     }
 
 
