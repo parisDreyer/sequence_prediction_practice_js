@@ -22,7 +22,7 @@ function groups_of_six(a) {
     while(sub.length > 0){
         let nxt_arr = []
         for(let i = 0; i < 6; ++i){
-            nxt_arr.push(sub.pop());
+            nxt_arr.push(sub.pop().map(n => n * 0.01)); // normalize arr of nums within range of 0.01
         }
         // reverse
         groups.push(nxt_arr.reverse());

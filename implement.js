@@ -1,6 +1,6 @@
-import { Numbers } from './res/numslist.js'; // the data
-import { Model } from './nn.js';
-import { prep_rnn_input } from './prep_data.js'; // does some specific shuffling for an array of arrays
+const { Numbers } = require('./res/numslist.js'); // the data
+const { Model } = require('./nn.js');
+const { prep_rnn_input } = require('./prep_data.js'); // does some specific shuffling for an array of arrays
 
 
 // desired accuracy
@@ -15,25 +15,22 @@ const max_epochs = 300;
 // layers and nodes per layer
 const nodes1 = 20;
 const nodes2 = 20;
-const nodes3 = 20;
+const nodes3 = output_size;
 const layers = [
     nodes1,
     nodes2,
-    nodes3
+    nodes3 // output size
 ];
 
-let tha_model = new Model({
-    input_size,
-    layers,
-    output_size
-});
+let tha_model = new Model({ input_size, layers });
 
 
 function train_model(model, target_accuracy, max_epochs){
 
     let current_epoch = 0;
 
-    while(model.accuracy < target_accuracy || current_epoch > max_epochs){
+    let accuracy = 0;
+    while(accuracy < target_accuracy || current_epoch > max_epochs){
 
         let new_samples = prep_rnn_input(Numbers);
 
@@ -48,6 +45,10 @@ function train_model(model, target_accuracy, max_epochs){
         }
 
         current_epoch++;
+
+
+        accuracy = model.accuracy();
+        console.log("accuracy: ", accuracy);
     }
 
     return model;
@@ -61,5 +62,6 @@ function train_model(model, target_accuracy, max_epochs){
 let trained_model = train_model(tha_model, target_accuracy, max_epochs);
 
 // predict next number sequence
-trained_model.predict(Numbers[Numbers.length - 1]); 
+console.log("THE PREDICTION: ",
+    JSON.stringify(trained_model.predict(Numbers[Numbers.length - 1]))); 
 

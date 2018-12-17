@@ -35,6 +35,25 @@ class NNMath{
         return res;
     }
 
+
+    static vals_plus_vals(vals1, vals2) {
+
+        if (vals1.length != vals2.length)
+            throw "vals must be same length";
+        let res = [];
+        for (let i = 0; i < vals1.length; ++i) {
+            res.push(vals1[i] + vals2[i]);
+        }
+
+        return res;
+    }
+
+    // min and max included
+    static rand(min, max) {
+        if (min === max) return min || 0;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     static sum(a){
         let total = 0;
         for(let i = 0; i < a.length; ++i){
