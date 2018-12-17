@@ -1,5 +1,5 @@
 import { Numbers } from './res/numslist.js'; // the data
-import { Model } from './rnn.js';
+import { Model } from './nn.js';
 import { prep_rnn_input } from './prep_data.js'; // does some specific shuffling for an array of arrays
 
 

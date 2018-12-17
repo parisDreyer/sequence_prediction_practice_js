@@ -23,6 +23,18 @@ class NNMath{
     }
 
 
+    static vals_times_vals(vals1, vals2){
+        
+        if(vals1.length != vals2.length)
+            throw "vals must be same length";
+        let res = [];
+        for(let i = 0; i < vals1.length; ++i){
+            res.push(vals1[i] * vals2[i]);
+        }
+
+        return res;
+    }
+
     static sum(a){
         let total = 0;
         for(let i = 0; i < a.length; ++i){
