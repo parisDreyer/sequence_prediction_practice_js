@@ -35,9 +35,9 @@ class Model{
     }
 
     predict(input){
-        let output = this.layers.predict(input);
+        let output = this.layers[0].predict(input);
         for(let i = 1; i < this.layers.length; ++i){
-            output = this.layers.predict(output);
+            output = this.layers[i].predict(output);
         }
 
         this.prev_output = output;
@@ -84,7 +84,7 @@ class Layer{
 
         this.nodes = [];
         for(let i = 0; i < size; ++i){
-            nodes.push(new Perceptron({ input_size, size}));
+            this.nodes.push(new Perceptron({ input_size, size}));
         }
 
     }
@@ -105,11 +105,11 @@ class Layer{
         if(this.size === 0) return deltas;
 
 
-        let inpt_errs = nodes[0].adjust(deltas);
-        for(let i = 1; i < nodes.length; ++i){
+        let inpt_errs = this.nodes[0].adjust(deltas);
+        for(let i = 1; i < this.nodes.length; ++i){
             inpt_errs = NNMath.vals_plus_vals(
                 inpt_errs, 
-                nodes[i].adjust(deltas));
+                this.nodes[i].adjust(deltas));
         }
         this.input_error = inpt_errs;
 
@@ -128,7 +128,7 @@ class Perceptron {
         this.prev_input = undefined;
         this.prev_output = undefined;
 
-        this.weights = Layer.init_weights(input_size);
+        this.weights = Perceptron.init_weights(input_size);
         this.input_errors = undefined; // errors with respect to weights
     }
 
