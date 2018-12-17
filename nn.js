@@ -1,14 +1,14 @@
 const { NNMath } = require('./utils/neuralnet_math.js');
 class Model{
 
-    constructor({input_size, layers }){
+    constructor({input_size, layers, temperature }){
 
         this.input_size = input_size;
         this.layers = layers.map((size, i) =>{
             if(i === 0){
-                return new Layer({ input_size, size });
+                return new Layer({ input_size, size, temperature });
             } else {
-                return new Layer({ input_size: layers[i - 1], size})
+                return new Layer({ input_size: layers[i - 1], size, temperature})
             }
         });
         this.past_ten_deltas = [];
@@ -72,7 +72,7 @@ class Model{
 
 class Layer{
 
-    constructor({ input_size, size }) {
+    constructor({ input_size, size, temperature }) {
         this.input_size = input_size;
         this.size = size;
 
@@ -84,7 +84,7 @@ class Layer{
 
         this.nodes = [];
         for(let i = 0; i < size; ++i){
-            this.nodes.push(new Perceptron({ input_size, size}));
+            this.nodes.push(new Perceptron({ input_size, size, temperature }));
         }
 
     }
@@ -121,12 +121,13 @@ class Layer{
 
 
 class Perceptron {
-    constructor({input_size, size}){
+    constructor({input_size, size, temperature }){
         this.input_size = input_size;
         this.size = size;
 
         this.prev_input = undefined;
         this.prev_output = undefined;
+        this.temperature = temperature || 0.01;
 
         this.weights = Perceptron.init_weights(input_size);
         this.input_errors = undefined; // errors with respect to weights
@@ -147,11 +148,11 @@ class Perceptron {
 
     adjust(output_error){
 
-        let err_signal = this.prev_output - NNMath.tanh_deriv(output_error);
+        let err_signal = NNMath.tanh_deriv(this.prev_output - output_error);
         this.input_errors = this.weights.map(w => w * err_signal);
         // adjust the weights
         for(let i = 0; i < this.weights.length; ++i){
-            this.weights[i] -= 0.0002 * this.input_errors[i];
+            this.weights[i] += this.temperature * this.input_errors[i];
         }
 
         return this.input_errors;

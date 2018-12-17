@@ -10,11 +10,11 @@ const target_accuracy = 0.99; // 99%
 // io
 const input_size = 5; // array of  5 values
 const output_size = 5;
-const max_epochs = 60000;
+const max_epochs = 2000;
 
 // layers and nodes per layer
-const nodes1 = 20;
-const nodes2 = 20;
+const nodes1 = 100;
+const nodes2 = 100;
 const nodes3 = output_size;
 const layers = [
     nodes1,
@@ -22,7 +22,7 @@ const layers = [
     nodes3 // output size
 ];
 
-let tha_model = new Model({ input_size, layers });
+let tha_model = new Model({ input_size, layers, temperature: 0.0001});
 
 
 async function train_model(model, target_accuracy, max_epochs){
@@ -33,13 +33,12 @@ async function train_model(model, target_accuracy, max_epochs){
     while(accuracy < target_accuracy && current_epoch < max_epochs){
 
         let new_samples = prep_rnn_input(Numbers);
-
         for(let i = 0; i < new_samples.length; i += 6){
 
 
             for(let s = i; s < i + 5; s++){
 
-                model.predict(new_samples[s]);
+                console.log(model.predict(new_samples[s]));
                 model.adjust(new_samples[s + 1]); // adjust to next in sequence
             }
         }

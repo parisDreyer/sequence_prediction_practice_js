@@ -9,6 +9,8 @@ class NNMath{
 
 
     static fast_tanh(x) {
+
+        return Math.tanh(x);
         if (x < -3)
             return -1;
         else if (x > 3)
