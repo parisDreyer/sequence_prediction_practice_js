@@ -2,9 +2,9 @@
 
 class NNMath{
 
-    // between -0.02 and 0.02
-    static rand_weights() {
-        return (Math.random() * (-0.02 - 0.02) + 0.02);
+    // between 0 and 0.05
+    static rand_weights(max = 0.0500000001, min = 0.0) {
+        return (Math.random() * (max - min) + min);
     }
 
 

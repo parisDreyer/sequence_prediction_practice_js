@@ -15,7 +15,9 @@ const max_epochs = 20000;
 // layers and nodes per layer
 
 const layers = [
-    128, // first layer
+    256, // first layer
+    42,
+    256,
     output_size // output size
 ];
 
