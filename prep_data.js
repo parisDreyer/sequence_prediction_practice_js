@@ -63,4 +63,15 @@ function prep_rnn_input(a){
     return flatten_once(arrs);
 }
 
-module.exports = { prep_rnn_input };
+function print_to_file(model){
+    const fs = require('fs');
+    fs.writeFile(`./serial/${Date.now()}_model.txt`, JSON.stringify(model), function (err) {
+        if (err) {
+            return console.log(err);
+        }
+
+        console.log("The file was saved!");
+    }); 
+}
+
+module.exports = { prep_rnn_input, print_to_file };
